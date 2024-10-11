@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react-native';  // Import testing library
-import HealthAdviceComponent from '../HealthAdviceComponent';  // Import the component
+import HealthAdviceComponent from '../src/components/HealthAdviceComponent';  // Import the component
 import globalStyles from '../styles';  // Import global styles
 
 // Template
