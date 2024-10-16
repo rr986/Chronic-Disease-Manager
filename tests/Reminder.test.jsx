@@ -13,13 +13,13 @@ describe('Reminder text', () => {
     render(<Reminder />);
     let test1 = true;
     try{
-      const text = screen.getByText('Reminder');
+      const text = screen.getByText('Reminder List');
     } catch {
       test1 = false;
     }
     let test2 = true;
     try{
-      const text2 = screen.getByText('Blank Reminder for testing');
+      const text2 = screen.getByText('Take medication');
     } catch {
       test2 = false;
     }
