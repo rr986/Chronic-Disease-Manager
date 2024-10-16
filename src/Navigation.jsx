@@ -15,6 +15,14 @@ function Navigation() {
         </li>
         <li>
           <NavLink
+            to='/chronic_conditions'
+            className={(navData) => (navData.isActive ? 'active' : 'none')}
+          >
+            Chronic Conditions
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
             to='/reminder'
             className={(navData) => (navData.isActive ? 'active' : 'none')}
           >

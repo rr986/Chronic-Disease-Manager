@@ -3,6 +3,7 @@ import Reminder from './Reminder';
 import Navigation from './Navigation';
 import './App.css'
 import Landing from './Landing';
+import ChronicConditions from './ChronicConditions';
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Landing />} />
         <Route path='/reminder' element={<Reminder />} />
+        <Route path='/chronic_conditions' element={<ChronicConditions />} />
       </Routes>
     </div>
   )
