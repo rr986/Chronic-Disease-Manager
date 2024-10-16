@@ -29,7 +29,7 @@ function RemindList(props, handleClick, deleteTodo) {
             <div>
                 <h1>{props.title}</h1>
                 <p>{props.description}</p>
-                <p>{d}</p>
+                {d}
                 <p>Completed: No</p>
                 <button onClick={() => deleteTodo(props.id)}>Delete</button>
                 <button onClick={() => handleClick(props)}>Complete</button>
