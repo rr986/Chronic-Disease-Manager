@@ -9,7 +9,7 @@ let testC = {
   Checkup: '10/24/2024',
   };
 let count = 1;
-let cond = [];
+let cond = [testC];
 function ChronicConditions() {
   //const [tem, setRem] = useState("Buy groceries");
   const [Conds, setHel] = useState(cond);
