@@ -1,8 +1,8 @@
-# React + Vite
+# Team 13 ElderEcho
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Team 13's web application for tracking and advising users on their health condition.
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Instructions for testing:
+Run npm install to download necessary modules
+Run npm run dev to view the website in its entirety
+Run npm test to run the supplied test files.
