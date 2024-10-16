@@ -2,7 +2,8 @@
   "name": "Chronic-Disease-Manager",
   "version": "1.0.0",
   "description": "A React web app to help manage chronic health conditions.",
-  "main": "index.js",
+  "main": "App.js",
+  "type": "module",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -11,6 +12,7 @@
   },
   "dependencies": {
     "react": "^17.0.2",
+    "react-scripts": "4.0.3",
     "react-dom": "^17.0.2",
     "react-router-dom": "^5.3.0",
     "axios": "^0.27.2",
