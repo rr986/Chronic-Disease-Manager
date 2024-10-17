@@ -12,6 +12,7 @@ npm install
 npm start
 
 cd ..
+
 cd frontend/ChronicDiseaseManager
 npm install cd ios
 pod install
