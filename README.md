@@ -5,7 +5,9 @@ simulator. Once xcode opens, click the play button in the top left corner.
 
 
 git checkout mobile 
+
 cd backend
+
 npm install
 
 #Start backend server for API calls
@@ -14,8 +16,11 @@ npm start
 cd ..
 
 cd frontend/ChronicDiseaseManager
+
 npm install cd ios
+
 pod install
+
 cd .. npx react-native start 
 
 #While the Metro bundler is running, open the project in Xcode in a new terminal window 
