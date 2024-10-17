@@ -29,6 +29,14 @@ function Navigation() {
             Reminder
           </NavLink>
         </li>
+        <li>
+          <NavLink
+            to='/voiceinput'
+            className={(navData) => (navData.isActive ? 'active' : 'none')}
+          >
+            VoiceInput
+          </NavLink>
+        </li>
       </ul>
     </nav>
   );
