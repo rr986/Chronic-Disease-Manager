@@ -1,5 +1,6 @@
 import {Route, Routes} from 'react-router-dom';
 import Reminder from './Reminder';
+import VoiceInput from './VoiceInput';
 import Navigation from './Navigation';
 import './App.css'
 import Landing from './Landing';
@@ -16,6 +17,7 @@ function App() {
         <Route path='/' element={<Landing />} />
         <Route path='/reminder' element={<Reminder />} />
         <Route path='/chronic_conditions' element={<ChronicConditions />} />
+        <Route path='/voiceinput' element={<VoiceInput />} />
       </Routes>
     </div>
   )
