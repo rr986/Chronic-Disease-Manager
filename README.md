@@ -17,7 +17,9 @@ cd ..
 
 cd frontend/ChronicDiseaseManager
 
-npm install cd ios
+npm install 
+
+cd ios
 
 pod install
 
