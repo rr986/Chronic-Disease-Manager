@@ -23,7 +23,9 @@ cd ios
 
 pod install
 
-cd .. npx react-native start 
+cd .. 
+
+npx react-native start 
 
 #While the Metro bundler is running, open the project in Xcode in a new terminal window 
 
