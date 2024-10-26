@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect} from 'react';
 import AddReminder from './AddReminder';
 import './App.css';
 import RemindList from './RemindList';
@@ -14,6 +14,19 @@ let test = {
 let remind = [test];
 function Reminder() {
     const [reminders, setRemind] = useState(remind);
+    useEffect(() => {
+      const fetchReminders = async () => {
+          try {
+              const response = await fetch('/api/reminders'); // Update URL based on your server
+              const data = await response.json();
+              setRemind(data);
+          } catch (error) {
+              console.error('Error fetching reminders:', error);
+          }
+      };
+
+      fetchReminders();
+  }, []);
     function deleteReminder (id) {
         setRemind(reminders.filter(t => t.id !== id))
       };
@@ -27,7 +40,7 @@ function Reminder() {
             }
         }));
     };
-      function addReminder (title, description, due){
+      const addReminder = async (title, description, due) => {
         if (!title) throw "Error: Title Missing";
         if (typeof title !== 'string') throw "Error: Title must be a string";
         if (title.trim().length < 5) throw "Error: Title must be at least 5 characters.";
@@ -61,13 +74,38 @@ function Reminder() {
           completed: false
         };
         count +=1;
-        setRemind((prevState) => [...prevState, new_remind]);
+        try {
+          const response = await fetch('/api/reminders', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(newRemind),
+          });
+
+          if (!response.ok) {
+              throw new Error('Failed to add reminder');
+          }
+
+          const addedReminder = await response.json();
+          setRemind((prevState) => [...prevState, addedReminder]);
+      } catch (error) {
+          console.error('Error adding reminder:', error);
       }
+  };
+        //setRemind((prevState) => [...prevState, new_remind]);
     let rem = "Blank Reminder for testing";
     return (
     <div> 
         <h1>Reminder List</h1>
-        {reminders.map(function(t) {return RemindList(t, toggleCompleted, deleteReminder)})}
+        {reminders.map(t => (
+                <RemindList 
+                    key={t.id} // Unique key for each reminder
+                    {...t} // Spread reminder properties
+                    handleClick={toggleCompleted} 
+                    deleteTodo={deleteReminder} 
+                />
+            ))}
         <div className='footer'>
             <h1>Add New Reminders</h1>
                 {AddReminder(addReminder)}
