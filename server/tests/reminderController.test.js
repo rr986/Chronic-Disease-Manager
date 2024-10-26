@@ -28,9 +28,9 @@ describe('Reminder API', () => {
             .send({
                 description: 'This is a test reminder without title or due'
             });
-        // It fails, I'll fix it later.
-        // expect(response.statusCode).toBe(400); 
-        //expect(response.body.error).toBe('Title and due date are required');
+
+        expect(response.statusCode).toBe(400); 
+        expect(response.body.error).toBe('Title and due date are required');
     });
 
     it('should return a list of reminders', async () => {
