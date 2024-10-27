@@ -22,17 +22,18 @@ function AddChronicHealth (add_func) {
             </div>
         </div>
           <form id='simple-form' onSubmit={handleChronic}>
-            <label>
+            <label style={{ fontSize: '22px' }}>
               Condition: 
               <input
                 id='Condition'
                 name='Condition'
                 type='text'
                 placeholder='Condition'
+                style={{ fontSize: '18px' }}
               />
             </label>
             <br/>
-            <label>
+            <label style={{ fontSize: '22px' }}>
               Last Checkup Date: 
               <input
                 id='Checkup'
@@ -40,10 +41,11 @@ function AddChronicHealth (add_func) {
                 type='date'
                 placeholder='Checkup'
                 min={new Date()}
+                style={{ fontSize: '18px' }}
               />
             </label>
     
-            <input type='submit' value='Submit' />
+            <input type='submit' value='Submit' style={{ fontSize: '16px' }} />
           </form>
         </div>
     )

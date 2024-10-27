@@ -41,7 +41,7 @@ function SignIn() {
         <h1>Log-In</h1>
         <form className='form' onSubmit={handleLogin}>
           <div className='form-group'>
-            <label>
+            <label style={{ fontSize: '36px' }}>
               Email Address:
               <br />
               <input
@@ -50,13 +50,14 @@ function SignIn() {
                 type='email'
                 placeholder='Email'
                 required
+                style={{ width: '300px', height: '40px', fontSize: '20px' }}
                 autoFocus={true}
               />
             </label>
           </div>
           <br />
           <div className='form-group'>
-            <label>
+            <label style={{ fontSize: '36px' }}>
               Password:
               <br />
               <input
@@ -65,15 +66,16 @@ function SignIn() {
                 placeholder='Password'
                 autoComplete='off'
                 required
+                style={{ width: '300px', height: '40px', fontSize: '20px' }}
               />
             </label>
           </div>
 
-          <button className='button' type='submit'>
+          <button className='button' type='submit' style={{ width: '150px', height: '30px', fontSize: '16px' }}>
             Log in
           </button>
 
-          <button className='forgotPassword' onClick={passwordReset}>
+          <button className='forgotPassword' style={{ width: '150px', height: '30px', fontSize: '16px' }} onClick={passwordReset} >
             Forgot Password
           </button>
         </form>

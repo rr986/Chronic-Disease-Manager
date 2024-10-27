@@ -11,9 +11,9 @@ let test = {
     due: '10/24/2024',
     completed: false
     };
-// let remind = [test];
+let remind = [test];
 function Reminder() {
-    const [reminders, setRemind] = useState([]);
+    const [reminders, setRemind] = useState(remind);
     useEffect(() => {
       const fetchReminders = async () => {
           try {

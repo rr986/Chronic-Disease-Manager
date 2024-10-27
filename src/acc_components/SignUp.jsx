@@ -35,7 +35,7 @@ function SignUp() {
       {pwMatch && <h4 className='error'>{pwMatch}</h4>}
       <form onSubmit={handleSignUp}>
         <div className='form-group'>
-          <label>
+          <label style={{ fontSize: '30px' }}>
             Name:
             <br />
             <input
@@ -45,11 +45,12 @@ function SignUp() {
               type='text'
               placeholder='Name'
               autoFocus={true}
+              style= {{fontSize: '18px'}}
             />
           </label>
         </div>
         <div className='form-group'>
-          <label>
+          <label style={{ fontSize: '30px' }}>
             Email:
             <br />
             <input
@@ -58,11 +59,12 @@ function SignUp() {
               name='email'
               type='email'
               placeholder='Email'
+              style= {{fontSize: '18px'}}
             />
           </label>
         </div>
         <div className='form-group'>
-          <label>
+          <label style={{ fontSize: '30px' }}>
             Password:
             <br />
             <input
@@ -73,11 +75,12 @@ function SignUp() {
               placeholder='Password'
               autoComplete='off'
               required
+              style= {{fontSize: '18px'}}
             />
           </label>
         </div>
         <div className='form-group'>
-          <label>
+          <label style={{ fontSize: '30px' }}>
             Confirm Password:
             <br />
             <input
@@ -87,6 +90,7 @@ function SignUp() {
               placeholder='Confirm Password'
               autoComplete='off'
               required
+              style= {{fontSize: '18px'}}
             />
           </label>
         </div>
@@ -95,6 +99,7 @@ function SignUp() {
           id='submitButton'
           name='submitButton'
           type='submit'
+          style={{ width: '150px', height: '30px', fontSize: '16px' }}
         >
           Sign Up
         </button>

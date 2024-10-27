@@ -6,7 +6,7 @@ import ChangePassword from './ChangePassword';
 function Account() {
   return (
     <div className='card'>
-      <h2>Account Page</h2>
+      <h2 style={{ fontSize: '32px' }}>Account Page</h2>
       <ChangePassword />
       <SignOutButton />
     </div>

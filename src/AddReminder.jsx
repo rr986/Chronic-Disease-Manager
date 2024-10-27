@@ -28,21 +28,21 @@ const AddReminder = (add_func) => {
               <div className="alert alert-danger text-goes-here"></div>
           </div>
           <form id='simple-form' onSubmit={handleSubmit}>
-              <label>
+              <label style={{ fontSize: '22px' }}>
                   Title: 
-                  <input id='title' name='title' type='text' placeholder='title' />
+                  <input id='title' name='title' type='text' placeholder='title' style={{ fontSize: '20px' }} />
               </label>
               <br />
-              <label>
+              <label style={{ fontSize: '22px' }}>
                   Description: 
-                  <input id='description' name='description' type='textarea' placeholder='description' />
+                  <input id='description' name='description' type='textarea' placeholder='description' style={{ fontSize: '20px' }} />
               </label>
               <br />
-              <label>
+              <label style={{ fontSize: '22px' }}>
                   Due: 
-                  <input id='due' name='due' type='date' placeholder='due' min={new Date().toISOString().split('T')[0]} />
+                  <input id='due' name='due' type='date' placeholder='due' style={{ fontSize: '20px' }} min={new Date().toISOString().split('T')[0]} />
               </label>
-              <input type='submit' value='Submit' />
+              <input type='submit' value='Submit' style={{ fontSize: '16px' }}/>
           </form>
       </div>
   );

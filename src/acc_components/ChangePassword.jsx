@@ -34,10 +34,10 @@ function ChangePassword() {
     return (
       <div>
         {pwMatch && <h4 className='error'>{pwMatch}</h4>}
-        <h2>Hi {currentUser.displayName}, Change Your Password Below</h2>
+        <h2 style={{ fontSize: '30px' }}>Hi {currentUser.displayName}, Change Your Password Below</h2>
         <form onSubmit={submitForm}>
           <div className='form-group'>
-            <label>
+            <label style={{ fontSize: '24px' }}>
               Current Password:
               <input
                 className='form-control'
@@ -47,12 +47,13 @@ function ChangePassword() {
                 placeholder='Current Password'
                 autoComplete='off'
                 required
+                style={{ fontSize: '24px' }}
               />
             </label>
           </div>
 
           <div className='form-group'>
-            <label>
+            <label style={{ fontSize: '24px' }}>
               New Password:
               <input
                 className='form-control'
@@ -62,11 +63,12 @@ function ChangePassword() {
                 placeholder='Password'
                 autoComplete='off'
                 required
+                style={{ fontSize: '24px' }}
               />
             </label>
           </div>
           <div className='form-group'>
-            <label>
+            <label style={{ fontSize: '24px' }}>
               Confirm New Password:
               <input
                 className='form-control'
@@ -76,11 +78,12 @@ function ChangePassword() {
                 placeholder='Confirm Password'
                 autoComplete='off'
                 required
+                style={{ fontSize: '24px' }}
               />
             </label>
           </div>
 
-          <button className='button' type='submit'>
+          <button className='button' type='submit' style={{ fontSize: '16px' }}>
             Change Password
           </button>
         </form>
