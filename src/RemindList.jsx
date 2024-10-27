@@ -1,9 +1,13 @@
 function RemindList({ id, title, description, due, completed, handleClick, deleteTodo }) {
     const today = new Date();
-    const dueArr = due.split("/");
-    const day = String(dueArr[1]).padStart(2, '0'); // Ensure day is two digits
-    const month = String(dueArr[0]).padStart(2, '0'); // Ensure month is two digits
-    const dueDate = new Date(`${dueArr[2]}-${month}-${day}`);
+    
+    // Ensure `due` is defined and split is only called if `due` is a valid string
+    const dueArr = due ? due.split("/") : [];
+    const day = dueArr[1] ? String(dueArr[1]).padStart(2, '0') : "01"; // Default to "01" if missing
+    const month = dueArr[0] ? String(dueArr[0]).padStart(2, '0') : "01"; // Default to "01" if missing
+    const year = dueArr[2] ? dueArr[2] : today.getFullYear(); // Use current year if missing
+
+    const dueDate = new Date(`${year}-${month}-${day}`);
     
     const isExpired = dueDate < today;
 
@@ -11,7 +15,7 @@ function RemindList({ id, title, description, due, completed, handleClick, delet
         <div className={isExpired ? "expired" : ""}>
             <h1>{title}</h1>
             <p>{description}</p>
-            <p>Due Date: {due}</p>
+            <p>Due Date: {due || "No due date provided"}</p>
             {isExpired && <p className="expired-message">This reminder is past due!</p>}
             <p>Completed: {completed ? "Yes" : "No"}</p>
             <button onClick={() => deleteTodo(id)}>Delete</button>
