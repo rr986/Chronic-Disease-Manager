@@ -1,3 +1,4 @@
+import Speech from 'react-speech'
 function ChronCondList(props, deleteTodo) {
     if(!props.completed){
         let d = null;
@@ -20,13 +21,16 @@ function ChronCondList(props, deleteTodo) {
         let Checkup_date = due_arr[2] + '-' + month + '-' + day;
         let CheckupDate = new Date(Checkup_date);
         d = <p>Last Checkup Date: {props.Checkup}</p>;
-        
+        let speechText = 'You have ' + props.Condition + '. Your last checkup was ' + Checkup_date;
         return (
             <div>
                 <h1>{props.Condition}</h1>
                 <p>{d}</p>
                 <button onClick={() => deleteTodo(props.id)}>Delete</button>
-                
+                {/* <button onClick={() =>  readToDo(props.Condition,d)}>Read</button> */}
+                <Speech text = {speechText}
+                textAsButton={true}    
+                displayText="Read"/>
                 
             </div>
         );
