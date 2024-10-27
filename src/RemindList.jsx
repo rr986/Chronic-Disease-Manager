@@ -1,3 +1,4 @@
+import Speech from 'react-speech'
 function RemindList({ id, title, description, due, completed, handleClick, deleteTodo }) {
     const today = new Date();
     
@@ -10,7 +11,7 @@ function RemindList({ id, title, description, due, completed, handleClick, delet
     const dueDate = new Date(`${year}-${month}-${day}`);
     
     const isExpired = dueDate < today;
-
+    let speechText = 'This reminder is titled ' + title + '. ' + description + '. It is due on ' + due + '.';
     return (
         <div className={isExpired ? "expired" : ""}>
             <h1>{title}</h1>
@@ -22,6 +23,9 @@ function RemindList({ id, title, description, due, completed, handleClick, delet
             <button onClick={() => handleClick({ id, title, description, due, completed })}>
                 {completed ? "Undo" : "Complete"}
             </button>
+            <Speech text = {speechText}
+                textAsButton={true}    
+                displayText="Read"/>
         </div>
     );
 }
