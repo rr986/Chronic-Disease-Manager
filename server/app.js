@@ -8,7 +8,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-app.use(reminderRoutes);
+app.use('/reminders', reminderRoutes);
 
 app.listen(3001, () => {
     console.log('Server is running on port 3001');

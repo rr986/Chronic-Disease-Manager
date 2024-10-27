@@ -16,8 +16,8 @@ const addReminder = async (req, res) => {
     } catch (err) {
         res.status(500).json({ error: 'Internal Server Error', details: err.message });
     }
+    
 };
-
 
 const getReminders = async (req, res) => {
     try {

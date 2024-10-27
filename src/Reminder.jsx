@@ -11,13 +11,13 @@ let test = {
     due: '10/24/2024',
     completed: false
     };
-let remind = [test];
+// let remind = [test];
 function Reminder() {
-    const [reminders, setRemind] = useState(remind);
+    const [reminders, setRemind] = useState([]);
     useEffect(() => {
       const fetchReminders = async () => {
           try {
-              const response = await fetch('/api/reminders'); // Update URL based on your server
+              const response = await fetch('/reminders'); // Update URL based on your server
               const data = await response.json();
               setRemind(data);
           } catch (error) {
@@ -75,12 +75,12 @@ function Reminder() {
         };
         count +=1;
         try {
-          const response = await fetch('/api/reminders', {
+          const response = await fetch('/reminders', {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json',
               },
-              body: JSON.stringify(newRemind),
+              body: JSON.stringify(new_remind),
           });
 
           if (!response.ok) {
@@ -100,7 +100,7 @@ function Reminder() {
         <h1>Reminder List</h1>
         {reminders.map(t => (
                 <RemindList 
-                    key={t.id} // Unique key for each reminder
+                    key={t.id } // Unique key for each reminder
                     {...t} // Spread reminder properties
                     handleClick={toggleCompleted} 
                     deleteTodo={deleteReminder} 
@@ -108,7 +108,7 @@ function Reminder() {
             ))}
         <div className='footer'>
             <h1>Add New Reminders</h1>
-                {AddReminder(addReminder)}
+            <AddReminder addReminder={addReminder} />
         </div>
     </div>
     );
