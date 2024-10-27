@@ -17,9 +17,16 @@ function Reminder() {
     useEffect(() => {
       const fetchReminders = async () => {
           try {
-              const response = await fetch('/reminders'); // Update URL based on your server
+              const response = await fetch('http://localhost:3001/reminders'); // Update URL based on your server
+              if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+              }
               const data = await response.json();
-              setRemind(data);
+              if (Array.isArray(data)) {
+                setRemind(data);
+            } else {
+                console.error('Fetched data is not an array:', data);
+            }
           } catch (error) {
               console.error('Error fetching reminders:', error);
           }
@@ -75,7 +82,7 @@ function Reminder() {
         };
         count +=1;
         try {
-          const response = await fetch('/reminders', {
+          const response = await fetch('http://localhost:3001/reminders', {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json',
@@ -84,13 +91,17 @@ function Reminder() {
           });
 
           if (!response.ok) {
-              throw new Error('Failed to add reminder');
+            const errorData = await response.json();
+            console.error('Error response:', errorData);
+            throw new Error('Failed to add reminder: ' + errorData.error);
           }
 
           const addedReminder = await response.json();
+          //return addedReminder;
           setRemind((prevState) => [...prevState, addedReminder]);
       } catch (error) {
-          console.error('Error adding reminder:', error);
+        console.error('Error adding reminder:', err);
+        res.status(500).json({ error: 'Internal Server Error', details: err.message });
       }
   };
         //setRemind((prevState) => [...prevState, new_remind]);
