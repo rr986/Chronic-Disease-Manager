@@ -14,6 +14,8 @@ npm install
 
 npm start
 
+#Start app
+
 cd ..
 
 cd frontend/ChronicDiseaseManager
