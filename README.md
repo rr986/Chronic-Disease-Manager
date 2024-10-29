@@ -11,6 +11,7 @@ cd backend
 npm install
 
 #Start backend server for API calls
+
 npm start
 
 cd ..
