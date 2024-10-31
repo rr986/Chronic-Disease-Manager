@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
-
+import Speech from 'react-speech';
 const VoiceInput = () => {
   const {
     transcript,
@@ -34,7 +34,6 @@ const VoiceInput = () => {
       setLoading(false);
     }
   };
-
   return (
     <div>
       <p>Microphone: {listening ? 'on' : 'off'}</p>
@@ -51,6 +50,9 @@ const VoiceInput = () => {
       
       <p>Voice Input: {transcript}</p>
       {loading ? <p>Loading response...</p> : <p> Response: {response}</p>}
+      <Speech text = {response}
+                textAsButton={true}    
+                displayText="Read"/>
     </div>
   );
 };
