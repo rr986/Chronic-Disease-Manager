@@ -1,17 +1,16 @@
-import Speech from 'react-speech'
+import React from 'react';
+import Speech from 'react-speech';
+
 function RemindList({ id, title, description, due, completed, handleClick, deleteTodo }) {
     const today = new Date();
-    
-    // Ensure `due` is defined and split is only called if `due` is a valid string
-    const dueArr = due ? due.split("/") : [];
-    const day = dueArr[1] ? String(dueArr[1]).padStart(2, '0') : "01"; // Default to "01" if missing
-    const month = dueArr[0] ? String(dueArr[0]).padStart(2, '0') : "01"; // Default to "01" if missing
-    const year = dueArr[2] ? dueArr[2] : today.getFullYear(); // Use current year if missing
 
-    const dueDate = new Date(`${year}-${month}-${day}`);
-    
-    const isExpired = dueDate < today;
-    let speechText = 'This reminder is titled ' + title + '. ' + description + '. It is due on ' + due + '.';
+    // Ensure `due` is a valid string and parse it to create a Date object
+    const dueDate = due ? new Date(due) : null;
+    const isExpired = dueDate ? dueDate < today : false;
+
+    // Construct the speech text
+    const speechText = `This reminder is titled ${title}. ${description}. It is due on ${due || "an unspecified date"}.`;
+
     return (
         <div className={isExpired ? "expired" : ""}>
             <h1>{title}</h1>
@@ -23,9 +22,7 @@ function RemindList({ id, title, description, due, completed, handleClick, delet
             <button onClick={() => handleClick({ id, title, description, due, completed })}>
                 {completed ? "Undo" : "Complete"}
             </button>
-            <Speech text = {speechText}
-                textAsButton={true}    
-                displayText="Read"/>
+            <Speech text={speechText} textAsButton={true} displayText="Read" />
         </div>
     );
 }

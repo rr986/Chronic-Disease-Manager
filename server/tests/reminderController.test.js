@@ -29,7 +29,7 @@ describe('Reminder API', () => {
                 description: 'This is a test reminder without title or due'
             });
 
-        expect(response.statusCode).toBe(400); 
+        expect(response.statusCode).toBe(400);
         expect(response.body.error).toBe('Title and due date are required');
     });
 

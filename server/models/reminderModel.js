@@ -1,12 +1,11 @@
-import pkg from 'pg';  
-const { Pool } = pkg;  
+import { getFirestore } from 'firebase/firestore';
+import { initializeApp } from 'firebase/app';
+import firebaseConfig from '../FirebaseConfigBackend.js';
 
-const pool = new Pool({
-    user: 'postgres',
-    host: '192.168.1.100',
-    database: 'reminders',
-    password: 'elderecho',
-    port: 5432
-});
+// Initialize Firebase app
+const app = initializeApp(firebaseConfig);
 
-export default pool;
+// Get Firestore instance
+const db = getFirestore(app);
+
+export default db;

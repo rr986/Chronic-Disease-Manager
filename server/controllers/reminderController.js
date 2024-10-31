@@ -1,38 +1,35 @@
-import pool from '../models/reminderModel.js';
+import { collection, addDoc, getDocs, doc, deleteDoc } from 'firebase/firestore';
+import db from '../FirebaseConfigBackend.js'; 
 
 const addReminder = async (req, res) => {
     const { title, description, due } = req.body;
     try {
-        const result = await pool.query(
-            'INSERT INTO reminders (title, description, due) VALUES ($1, $2, $3) RETURNING *',
-            [title, description, due]
-        );
-        res.status(201).send(result.rows[0]);
+        const docRef = await addDoc(collection(db, "reminders"), {
+            title,
+            description,
+            due
+        });
+        res.status(201).send({ id: docRef.id, title, description, due });
     } catch (err) {
         res.status(500).json({ error: 'Internal Server Error', details: err.message });
     }
-    
 };
 
 const getReminders = async (req, res) => {
     try {
-        const result = await pool.query('SELECT * FROM reminders');
-        res.send(result.rows);
+        const querySnapshot = await getDocs(collection(db, "reminders"));
+        const reminders = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        res.send(reminders);
     } catch (err) {
         res.status(500).send(err);
     }
 };
 
-
-const deleteReminder = async(req, res) => {
+const deleteReminder = async (req, res) => {
     const { id } = req.params;
-
     try {
-        const result = await pool.query('DELETE FROM reminders WHERE id = $1 RETURNING *', [id]);
-        if (result.rowCount === 0) {
-            return res.status(404).json({ error: 'Reminder not found' });
-        }
-        res.status(200).json({ message: 'Reminder deleted successfully', reminder: result.rows[0] });
+        await deleteDoc(doc(db, "reminders", id));
+        res.status(200).json({ message: 'Reminder deleted successfully', id });
     } catch (err) {
         res.status(500).json({ error: 'Internal Server Error', details: err.message });
     }
