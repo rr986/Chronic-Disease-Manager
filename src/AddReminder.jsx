@@ -1,5 +1,6 @@
 const AddReminder = (add_func) => {
   const handleSubmit = async (e) => {
+      console.log("handleSubmit called");
       const errorContainer = document.getElementById('error');
       errorContainer.hidden = true;
       e.preventDefault();
@@ -8,9 +9,11 @@ const AddReminder = (add_func) => {
       let description = document.getElementById('description').value;
       let due = document.getElementById('due').value;
 
+      console.log("Calling add_func...");
       try {
           // Await the add_func call
           await add_func(title, description, due);
+          console.log("add_func executed successfully");
           // Clear inputs only after successful submission
           document.getElementById('title').value = '';
           document.getElementById('description').value = '';

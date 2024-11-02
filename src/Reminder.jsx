@@ -24,25 +24,34 @@ function Reminder() {
   }, []);
 
   // Function to add a reminder to Firestore
-  const addReminder = async (title, description, due) => {
-    try {
-      if (!title || typeof title !== 'string' || title.trim().length < 5) {
-        throw new Error('Title must be at least 5 characters.');
-      }
-      if (!description || typeof description !== 'string' || description.trim().length < 5) {
-        throw new Error('Description must be at least 5 characters.');
-      }
-      if (!due || typeof due !== 'string' || !due.includes('-')) {
-        throw new Error('Due date is not formatted properly.');
-      }
+const addReminder = async (title, description, due) => {
+  try {
+    console.log("Starting addReminder...");
+    console.log("Title:", title);
+    console.log("Description:", description);
+    console.log("Due:", due);
 
-      const newReminder = { title: title.trim(), description: description.trim(), due };
-      const docRef = await addDoc(collection(db, 'reminders'), newReminder);
-      setReminders(prevReminders => [...prevReminders, { id: docRef.id, ...newReminder }]);
-    } catch (error) {
-      console.error('Error adding reminder:', error);
+    if (!title || typeof title !== 'string' || title.trim().length < 5) {
+      throw new Error('Title must be at least 5 characters.');
     }
-  };
+    if (!description || typeof description !== 'string' || description.trim().length < 5) {
+      throw new Error('Description must be at least 5 characters.');
+    }
+    if (!due || typeof due !== 'string' || !due.includes('-')) {
+      throw new Error('Due date is not formatted properly.');
+    }
+
+    const newReminder = { title: title.trim(), description: description.trim(), due };
+    console.log("New Reminder Object:", newReminder);
+
+    const docRef = await addDoc(collection(db, 'reminders'), newReminder);
+    console.log("Document successfully added with ID:", docRef.id);
+
+    setReminders(prevReminders => [...prevReminders, { id: docRef.id, ...newReminder }]);
+  } catch (error) {
+    console.error('Error adding reminder:', error);
+  }
+};
 
   // Function to toggle completed status (kept for future use if needed)
   const toggleCompleted = (reminder) => {
