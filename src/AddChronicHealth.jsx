@@ -1,53 +1,79 @@
-function AddChronicHealth (add_func) {
-    const handleChronic = async (e) => {
-        const errorContainer = document.getElementById('error');
-        errorContainer.hidden = true;
-        e.preventDefault();
-        let Condition = document.getElementById('Condition').value;
-        let Checkup = document.getElementById('Checkup').value;
-        try{
-            add_func(Condition, Checkup);
-        } catch(e){
-            const errorTextElement = errorContainer.getElementsByClassName('text-goes-here')[0];
-            errorTextElement.textContent = e;
-            errorContainer.hidden = false;
-        }
+import React, { useState } from 'react';
 
-        document.getElementById('Condition').value = '';
-        document.getElementById('Checkup').value = '';
+const AddChronicHealth = ({ add_func }) => {
+  const [condition, setCondition] = useState('');
+  const [checkup, setCheckup] = useState('');
+  const [error, setError] = useState('');
+
+  const handleChronic = async (e) => {
+    e.preventDefault();
+    setError(''); // Reset previous errors
+
+    try {
+      await add_func(condition, checkup); // Assume add_func returns a promise
+      setCondition('');
+      setCheckup('');
+    } catch (err) {
+      setError(err.message || 'An unexpected error occurred.');
     }
-    return (
-        <div>
-            <div id= "error" hidden={true}><div className="alert alert-danger text-goes-here">
-            </div>
+  };
+
+  const today = new Date().toISOString().split('T')[0]; // Format: YYYY-MM-DD
+
+  return (
+    <div className="add-chronic-health-container">
+      {/* Error Message */}
+      {error && (
+        <div className="alert alert-danger error-message">
+          {error}
         </div>
-          <form id='simple-form' onSubmit={handleChronic}>
-            <label style={{ fontSize: '22px' }}>
-              Condition: 
-              <input
-                id='Condition'
-                name='Condition'
-                type='text'
-                placeholder='Condition'
-                style={{ fontSize: '18px' }}
-              />
-            </label>
-            <br/>
-            <label style={{ fontSize: '22px' }}>
-              Last Checkup Date: 
-              <input
-                id='Checkup'
-                name='Checkup'
-                type='date'
-                placeholder='Checkup'
-                min={new Date()}
-                style={{ fontSize: '18px' }}
-              />
-            </label>
-    
-            <input type='submit' value='Submit' style={{ fontSize: '16px' }} />
-          </form>
+      )}
+
+      {/* Chronic Health Form */}
+      <form className="chronic-health-form" onSubmit={handleChronic}>
+        {/* Condition Input */}
+        <div className="form-group">
+          <label htmlFor="Condition" className="form-label">
+            Condition:
+          </label>
+          <input
+            id="Condition"
+            name="Condition"
+            type="text"
+            placeholder="Condition"
+            className="form-input"
+            value={condition}
+            onChange={(e) => setCondition(e.target.value)}
+            required
+            minLength={3}
+          />
         </div>
-    )
-}
+
+        {/* Checkup Date Input */}
+        <div className="form-group">
+          <label htmlFor="Checkup" className="form-label">
+            Last Checkup Date:
+          </label>
+          <input
+            id="Checkup"
+            name="Checkup"
+            type="date"
+            placeholder="Checkup"
+            className="form-input"
+            value={checkup}
+            onChange={(e) => setCheckup(e.target.value)}
+            required
+            max={today} // Prevent future dates
+          />
+        </div>
+
+        {/* Submit Button */}
+        <button type="submit" className="btn submit-btn">
+          Submit
+        </button>
+      </form>
+    </div>
+  );
+};
+
 export default AddChronicHealth;
