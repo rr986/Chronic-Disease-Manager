@@ -2,6 +2,27 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import express from 'express';
 import { addReminder, getReminders, deleteReminder } from '../controllers/reminderController.js';
+import { addReminder, getReminders, deleteReminder } from '../controllers/reminderController.js';
+
+vi.mock('../FirebaseConfigBackend.js', () => ({
+    __esModule: true,
+    default: {
+        collection: vi.fn(() => ({
+            addDoc: vi.fn().mockResolvedValue({ id: 'mocked-id' }),
+            getDocs: vi.fn().mockResolvedValue({
+                docs: [
+                    {
+                        id: 'mocked-id',
+                        data: () => ({ title: 'Mocked Reminder', description: 'Mocked Description', due: '2024-10-30' })
+                    }
+                ]
+            }),
+            doc: vi.fn().mockImplementation(() => ({
+                deleteDoc: vi.fn().mockResolvedValue(),
+            }))
+        }))
+    }
+}));
 
 const app = express();
 app.use(express.json());
@@ -16,8 +37,8 @@ describe('Reminder API', () => {
         const response = await request(app)
             .post('/reminders')
             .send({
-                title: 'Test Reminder',
-                description: 'This is a test reminder',
+                title: 'Mocked Test Reminder',
+                description: 'This is a mocked test reminder',
                 due: '2024-10-30'
             });
 
