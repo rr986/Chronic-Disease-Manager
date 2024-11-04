@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { collection, addDoc, getDocs, deleteDoc, doc, Timestamp, onSnapshot } from 'firebase/firestore';
-import db from './firebase/reminderModel.js'; // Import Firestore instance
+import db from './firebase/reminderModel.js';
 import AddReminder from './AddReminder';
 import RemindList from './RemindList';
 import { AuthContext } from './context/AuthContext';

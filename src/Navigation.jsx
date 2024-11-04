@@ -46,6 +46,14 @@ const NavigationAuth = () => {
           </NavLink>
         </li>
         <li>
+         <NavLink
+            to='/diary'
+            className={({ isActive }) => (isActive ? 'active' : undefined)}
+            >
+            Diary
+         </NavLink>
+          </li>
+        <li>
           <NavLink to='/account'>Account</NavLink>
         </li>
         <li>

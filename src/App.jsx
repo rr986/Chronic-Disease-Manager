@@ -1,6 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import Reminder from './Reminder';
 import VoiceInput from './VoiceInput';
+import Diary from './Diary';
 import Navigation from './Navigation';
 import './App.css';
 import Landing from './Landing';
@@ -29,6 +30,7 @@ function App() {
             <Route path='/reminder' element={<Reminder />} />
             <Route path='/chronic_conditions' element={<ChronicConditions />} />
             <Route path='/voiceinput' element={<VoiceInput />} />
+            <Route path='/diary' element={<Diary />} />
             <Route path='/account' element={<Account />} />
             {/* Add more protected routes here if needed */}
           </Route>
