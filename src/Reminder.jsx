@@ -55,7 +55,6 @@ function Reminder() {
 
       const newReminder = { title: title.trim(), description: description.trim(), due, completed: false, createdAt: Timestamp.now() };
       await addDoc(remindersCollectionRef, newReminder);
-      // No need to update state manually as onSnapshot handles real-time updates
     } catch (error) {
       console.error('Error adding reminder:', error);
       throw error; // Propagate the error for AddReminder to handle
