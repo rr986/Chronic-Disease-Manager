@@ -1,12 +1,11 @@
-import {Navigate, Outlet} from 'react-router-dom';
-import React, {useContext} from 'react';
-import {AuthContext} from '../context/AuthContext';
+// src/acc_components/PrivateRoute.jsx
+import React, { useContext } from 'react';
+import { Navigate, Outlet } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 
 const PrivateRoute = () => {
-  const {currentUser} = useContext(AuthContext);
-  //console.log('Private Route Comp current user', currentUser);
-  // If authorized, return an outlet that will render child elements
-  // If not, return element that will navigate to login page
+  const { currentUser } = useContext(AuthContext);
+
   return currentUser ? <Outlet /> : <Navigate to='/signin' replace={true} />;
 };
 

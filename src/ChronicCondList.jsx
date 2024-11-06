@@ -1,39 +1,40 @@
-import Speech from 'react-speech'
-function ChronCondList(props, deleteTodo) {
-    if(!props.completed){
-        let d = null;
-        let today = new Date();
-        let due_arr = props.Checkup.split("/");
-        let day = null;
-        if (due_arr[1] < 10){
-            day = '0' + due_arr[1];
-        }
-        else {
-            day = due_arr[1];
-        }
-        let month = null;
-        if (due_arr[0] < 10){
-            month = '0' + due_arr[0];
-        }
-        else {
-            month = due_arr[0];
-        }
-        let Checkup_date = due_arr[2] + '-' + month + '-' + day;
-        let CheckupDate = new Date(Checkup_date);
-        d = <p>Last Checkup Date: {props.Checkup}</p>;
-        let speechText = 'You have ' + props.Condition + '. Your last checkup was ' + Checkup_date;
-        return (
-            <div>
-                <h1>{props.Condition}</h1>
-                <p>{d}</p>
-                <button onClick={() => deleteTodo(props.id)}>Delete</button>
-                {/* <button onClick={() =>  readToDo(props.Condition,d)}>Read</button> */}
-                <Speech text = {speechText}
-                textAsButton={true}    
-                displayText="Read"/>
-                
-            </div>
-        );
-    }
-}
+import React from 'react';
+import Speech from 'react-speech';
+
+const ChronCondList = ({ id, Condition, Checkup, completed, deleteReminder, toggleCompleted }) => {
+  if (completed) {
+    return null;
+  }
+
+  // Covert the Checkup date from "MM/DD/YYYY" to "YYYY-MM-DD"
+  const [month, day, year] = Checkup.split('/');
+  const formattedDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+  const checkupDate = new Date(formattedDate);
+
+  // Generate speech text
+  const speechText = `You have ${Condition}. Your last checkup was on ${checkupDate.toDateString()}.`;
+
+  return (
+    <div className="chronic-condition-item">
+      <h2>{Condition}</h2>
+      <p>Last Checkup Date: {Checkup}</p>
+      <button onClick={() => deleteReminder(id)} className="btn delete-btn">
+        Delete
+      </button>
+      {/* Optional Toggle Completed Button */}
+      {toggleCompleted && (
+        <button onClick={() => toggleCompleted(id)} className="btn toggle-btn">
+          {completed ? 'Mark as Incomplete' : 'Mark as Complete'}
+        </button>
+      )}
+      <Speech
+        text={speechText}
+        textAsButton={true}
+        displayText="Read"
+        className="btn read-btn"
+      />
+    </div>
+  );
+};
+
 export default ChronCondList;
