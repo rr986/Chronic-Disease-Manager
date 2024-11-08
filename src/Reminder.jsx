@@ -43,15 +43,7 @@ function Reminder() {
   const addReminder = async (title, description, due) => {
     try {
       // Validation
-      if (!title || typeof title !== 'string' || title.trim().length < 5) {
-        throw new Error('Title must be at least 5 characters.');
-      }
-      if (!description || typeof description !== 'string' || description.trim().length < 5) {
-        throw new Error('Description must be at least 5 characters.');
-      }
-      if (!due || typeof due !== 'string' || !due.includes('-')) {
-        throw new Error('Due date is not formatted properly.');
-      }
+      errCheck(title, description, due);
 
       const newReminder = { title: title.trim(), description: description.trim(), due, completed: false, createdAt: Timestamp.now() };
       await addDoc(remindersCollectionRef, newReminder);
@@ -115,6 +107,18 @@ function Reminder() {
       </div>
     </div>
   );
+
+  function errCheck(title, description, due) {
+    if (!title || typeof title !== 'string' || title.trim().length < 5) {
+      throw new Error('Title must be at least 5 characters.');
+    }
+    if (!description || typeof description !== 'string' || description.trim().length < 5) {
+      throw new Error('Description must be at least 5 characters.');
+    }
+    if (!due || typeof due !== 'string' || !due.includes('-')) {
+      throw new Error('Due date is not formatted properly.');
+    }
+  }
 }
 
 export default Reminder;

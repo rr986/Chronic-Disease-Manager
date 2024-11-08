@@ -17,17 +17,21 @@ const AddReminder = ({ add_func }) => {
       return;
     }
 
-    try {
-      console.log('Calling add_func with arguments:', title, description, due);
-      await add_func(title, description, due);
-      console.log('add_func executed successfully');
-      setTitle('');
-      setDescription('');
-      setDue('');
-      setSuccess('Reminder added successfully!');
-    } catch (err) {
-      console.error('Error in handleSubmit:', err);
-      setError(err.message || 'An error occurred while adding the reminder.');
+    await addFunction();
+
+    async function addFunction() {
+      try {
+        console.log('Calling add_func with arguments:', title, description, due);
+        await add_func(title, description, due);
+        console.log('add_func executed successfully');
+        setTitle('');
+        setDescription('');
+        setDue('');
+        setSuccess('Reminder added successfully!');
+      } catch (err) {
+        console.error('Error in handleSubmit:', err);
+        setError(err.message || 'An error occurred while adding the reminder.');
+      }
     }
   };
 
