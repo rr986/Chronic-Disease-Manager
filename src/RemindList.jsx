@@ -10,29 +10,24 @@ const RemindList = ({
   handleClick,
   deleteReminder,
 }) => {
-  // Handle due date formatting
   let formattedDueDate = 'No due date';
 
   if (due) {
     if (typeof due === 'string') {
-      // Due date is already a formatted string
       formattedDueDate = due;
     } else if (due.seconds) {
       // Due date is a Firestore Timestamp
-      const dueDate = due.toDate(); // Convert to JavaScript Date
+      const dueDate = due.toDate(); 
       formattedDueDate = dueDate.toLocaleDateString();
     } else {
-      // Handle other cases if necessary
       formattedDueDate = 'Invalid date';
     }
   }
 
-  // Determine if the reminder is expired
   const today = new Date();
   const dueDateObj = new Date(formattedDueDate);
   const isExpired = dueDateObj < today;
 
-  // Construct the speech text
   const speechText = `This reminder is titled ${title}. ${description}. It is due on ${
     formattedDueDate !== 'Invalid date' ? formattedDueDate : 'an unspecified date'
   }.`;
