@@ -44,14 +44,12 @@ const AddReminder = ({ add_func }) => {
 
   return (
     <div>
-      {/* Success Message */}
       {success && (
         <div id="success" className="alert alert-success">
           {success}
         </div>
       )}
 
-      {/* Error Message */}
       {error && (
         <div id="error" className="alert alert-danger">
           {error}
@@ -60,7 +58,6 @@ const AddReminder = ({ add_func }) => {
 
       {/* Reminder Form */}
       <form id="simple-form" onSubmit={handleSubmit} noValidate>
-        {/* Title Input */}
         <div style={{ marginBottom: '10px' }}>
           <label style={{ fontSize: '22px' }}>
             Title:
