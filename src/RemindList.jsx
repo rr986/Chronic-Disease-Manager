@@ -1,28 +1,56 @@
 import React from 'react';
 import Speech from 'react-speech';
 
-function RemindList({ id, title, description, due, completed, handleClick, deleteReminder }) { // Changed deleteTodo to deleteReminder
-    const today = new Date();
+const RemindList = ({
+  id,
+  title,
+  description,
+  due,
+  completed,
+  handleClick,
+  deleteReminder,
+}) => {
+  // Handle due date formatting
+  let formattedDueDate = 'No due date';
 
-    const dueDate = due ? new Date(due) : null;
-    const isExpired = dueDate ? dueDate < today : false;
+  if (due) {
+    if (typeof due === 'string') {
+      // Due date is already a formatted string
+      formattedDueDate = due;
+    } else if (due.seconds) {
+      // Due date is a Firestore Timestamp
+      const dueDate = due.toDate(); // Convert to JavaScript Date
+      formattedDueDate = dueDate.toLocaleDateString();
+    } else {
+      // Handle other cases if necessary
+      formattedDueDate = 'Invalid date';
+    }
+  }
 
-    const speechText = `This reminder is titled ${title}. ${description}. It is due on ${due || "an unspecified date"}.`;
+  // Determine if the reminder is expired
+  const today = new Date();
+  const dueDateObj = new Date(formattedDueDate);
+  const isExpired = dueDateObj < today;
 
-    return (
-        <div className={isExpired ? "expired" : ""}>
-            <h1>{title}</h1>
-            <p>{description}</p>
-            <p>Due Date: {due || "No due date provided"}</p>
-            {isExpired && <p className="expired-message">This reminder is past due!</p>}
-            <p>Completed: {completed ? "Yes" : "No"}</p>
-            <button onClick={() => deleteReminder(id)} className="btn delete-btn">Delete</button> {/* Updated prop name */}
-            <button onClick={() => handleClick({ id, title, description, due, completed })} className="btn complete-btn">
-                {completed ? "Undo" : "Complete"}
-            </button>
-            <Speech text={speechText} textAsButton={true} displayText="Read" />
-        </div>
-    );
-}
+  // Construct the speech text
+  const speechText = `This reminder is titled ${title}. ${description}. It is due on ${
+    formattedDueDate !== 'Invalid date' ? formattedDueDate : 'an unspecified date'
+  }.`;
+
+  return (
+    <div className={`reminder-item ${isExpired ? 'expired' : ''}`}>
+      <h3>{title}</h3>
+      <p>{description}</p>
+      <p>Due Date: {formattedDueDate}</p>
+      {isExpired && <p className="expired-message">This reminder is past due!</p>}
+      <p>Completed: {completed ? 'Yes' : 'No'}</p>
+      <button onClick={() => deleteReminder(id)}>Delete</button>
+      <button onClick={() => handleClick({ id, title, description, due, completed })}>
+        {completed ? 'Undo' : 'Complete'}
+      </button>
+      <Speech text={speechText} textAsButton={true} displayText="Read" />
+    </div>
+  );
+};
 
 export default RemindList;
