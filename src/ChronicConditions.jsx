@@ -108,7 +108,6 @@ const ChronicConditions = () => {
               Checkup={condition.Checkup}
               completed={condition.completed}
               deleteReminder={deleteHealth}
-              toggleCompleted={toggleCompleted} // Pass if implementing toggle
             />
           ))
         ) : (

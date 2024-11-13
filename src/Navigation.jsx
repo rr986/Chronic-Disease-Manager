@@ -54,6 +54,11 @@ const NavigationAuth = () => {
          </NavLink>
           </li>
         <li>
+          <NavLink to="/condition_advice" className={({ isActive }) => (isActive ? 'active' : undefined)}>
+            Condition Advice
+          </NavLink>
+        </li>
+        <li>
           <NavLink to='/account'>Account</NavLink>
         </li>
         <li>

@@ -6,6 +6,7 @@ import Navigation from './Navigation';
 import './App.css';
 import Landing from './Landing';
 import ChronicConditions from './ChronicConditions';
+import ConditionAdvice from './ConditionAdvice';
 import Account from './acc_components/Account';
 import SignIn from './acc_components/SignIn';
 import SignUp from './acc_components/SignUp';
@@ -31,6 +32,7 @@ function App() {
             <Route path='/chronic_conditions' element={<ChronicConditions />} />
             <Route path='/voiceinput' element={<VoiceInput />} />
             <Route path='/diary' element={<Diary />} />
+            <Route path="/condition_advice" element={<ConditionAdvice />} />
             <Route path='/account' element={<Account />} />
             {/* Add more protected routes here if needed */}
           </Route>
