@@ -22,7 +22,7 @@ const ConditionAdvice = () => {
       console.log('AI Response:', data)
       setAIResponses(prevState => ({
         ...prevState,
-        [condition]: data.response.text,
+        [condition]: data.response.candidates[0].content.parts[0].text,
       }));
     } catch (err) {
       console.error('Error fetching response:', err);
