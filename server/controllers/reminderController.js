@@ -1,5 +1,5 @@
 import { collection, addDoc, getDocs, doc, deleteDoc } from 'firebase/firestore';
-import db from '../FirebaseConfigBackend.js'; 
+import db from '../FirebaseConfigBackend.js';
 
 const addReminder = async (req, res) => {
     const { title, description, due } = req.body;
@@ -35,4 +35,4 @@ const deleteReminder = async (req, res) => {
     }
 };
 
-export { addReminder, getReminders, deleteReminder };
+export { addReminder, getReminders, deleteReminder};
