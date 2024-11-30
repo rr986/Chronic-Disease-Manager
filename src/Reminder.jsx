@@ -54,7 +54,7 @@ function Reminder() {
   }, [remindersCollectionRef]);
 
   // Function to add a reminder to Firestore
-  const addReminder = async (title, description, due) => {
+  const addReminder = async (title, description, due, time) => {
     try {
       // Validation
       if (!title || typeof title !== 'string' || title.trim().length < 5) {
@@ -65,6 +65,9 @@ function Reminder() {
       }
       if (!due || typeof due !== 'string' || !due.includes('-')) {
         throw new Error('Due date is not formatted properly.');
+      }
+      if(!time || typeof time !== 'string' || !time.includes(':')){
+        throw new Error('Time is not formatted properly');
       }
 
    const dueDate = new Date(due);
@@ -79,6 +82,7 @@ function Reminder() {
          title: title.trim(),
          description: description.trim(),
          due: formattedDueDate,
+         time:time.trim(),
          completed: false,
          createdAt: Timestamp.now(),
        };

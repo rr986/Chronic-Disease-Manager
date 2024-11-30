@@ -6,6 +6,7 @@ const RemindList = ({
   title,
   description,
   due,
+  time,
   completed,
   handleClick,
   deleteReminder,
@@ -27,7 +28,6 @@ const RemindList = ({
   const today = new Date();
   const dueDateObj = new Date(formattedDueDate);
   const isExpired = dueDateObj < today;
-
   const speechText = `This reminder is titled ${title}. ${description}. It is due on ${
     formattedDueDate !== 'Invalid date' ? formattedDueDate : 'an unspecified date'
   }.`;
@@ -37,6 +37,7 @@ const RemindList = ({
       <h3>{title}</h3>
       <p>{description}</p>
       <p>Due Date: {formattedDueDate}</p>
+      <p>Time: {time}</p>
       {isExpired && <p className="expired-message">This reminder is past due!</p>}
       <p>Completed: {completed ? 'Yes' : 'No'}</p>
       <button onClick={() => deleteReminder(id)}>Delete</button>

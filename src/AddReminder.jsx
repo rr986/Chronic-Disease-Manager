@@ -4,6 +4,7 @@ const AddReminder = ({ add_func }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [due, setDue] = useState('');
+  const [time, setTime] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
@@ -25,14 +26,24 @@ const AddReminder = ({ add_func }) => {
       setError('Due date is required.');
       return;
     }
+    // if(!time.trim() || time.trim().length !== 5){
+    //   setError(`Time is required.`);
+    //   return;
+    // }
+    const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/; // Matches HH:MM in 24-hour format
+    if (!time.trim() || !timeRegex.test(time.trim())) {
+      setError('Invalid time format. Time must be in HH:MM format (24-hour clock).');
+      return;
+    }
 
     try {
-      console.log('Calling add_func with arguments:', title, description, due);
-      await add_func(title, description, due);
+      console.log('Calling add_func with arguments:', title, description, due, time);
+      await add_func(title, description, due, time);
       console.log('add_func executed successfully');
       setTitle('');
       setDescription('');
       setDue('');
+      setTime('');
       setSuccess('Reminder added successfully!');
     } catch (err) {
       console.error('Error in handleSubmit:', err);
@@ -110,7 +121,22 @@ const AddReminder = ({ add_func }) => {
             />
           </label>
         </div>
-
+        {/* Time Input */}
+        <div style={{ marginBottom: '10px' }}>
+          <label style={{ fontSize: '22px' }}>
+            Time:
+            <input
+              id="time"
+              name="time"
+              type="time"
+              placeholder="Time"
+              style={{ fontSize: '20px', marginLeft: '10px' }}
+              value={time}
+              onChange={(e) => setTime(e.target.value)}
+              required
+            />
+          </label>
+        </div>
         {/* Submit Button */}
         <button type="submit" style={{ fontSize: '16px', padding: '5px 10px' }}>
           Submit
