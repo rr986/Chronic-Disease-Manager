@@ -107,6 +107,7 @@ const ChronicConditions = () => {
               Condition={condition.Condition}
               Checkup={condition.Checkup}
               completed={condition.completed}
+              toggleCompleted={toggleCompleted}
               deleteReminder={deleteHealth}
             />
           ))

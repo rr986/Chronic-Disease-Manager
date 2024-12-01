@@ -2,17 +2,18 @@ import React from 'react';
 import Speech from 'react-speech';
 
 const ChronCondList = ({ id, Condition, Checkup, completed, deleteReminder, toggleCompleted }) => {
+  /*
   if (completed) {
     return null;
   }
-
+  */
   // Covert the Checkup date from "MM/DD/YYYY" to "YYYY-MM-DD"
   const [month, day, year] = Checkup.split('/');
   const formattedDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
   const checkupDate = new Date(formattedDate);
 
   // Generate speech text
-  const speechText = `You have ${Condition}. Your last checkup was on ${checkupDate.toDateString()}.`;
+  const speechText = `You have ${Condition}. Your last checkup was on ${checkupDate.toLocaleDateString()}.`;
 
   return (
     <div className="chronic-condition-item">
