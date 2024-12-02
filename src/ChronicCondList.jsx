@@ -22,12 +22,6 @@ const ChronCondList = ({ id, Condition, Checkup, completed, deleteReminder, togg
       <button onClick={() => deleteReminder(id)} className="btn delete-btn">
         Delete
       </button>
-      {/* Optional Toggle Completed Button */}
-      {toggleCompleted && (
-        <button onClick={() => toggleCompleted(id)} className="btn toggle-btn">
-          {completed ? 'Mark as Incomplete' : 'Mark as Complete'}
-        </button>
-      )}
       <Speech
         text={speechText}
         textAsButton={true}

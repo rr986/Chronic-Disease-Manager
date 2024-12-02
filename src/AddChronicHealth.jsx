@@ -8,7 +8,23 @@ const AddChronicHealth = ({ add_func }) => {
   const handleChronic = async (e) => {
     e.preventDefault();
     setError(''); // Reset previous errors
-
+    if(!condition.trim()){
+      setError('Condition must not be empty!');
+    }
+    if(!checkup){
+      setError('Checkup must not be empty!');
+    }
+    const dateRegex = /^(\d{2})-(\d{2})-(\d{4})$/; // Matches DD-MM-YYYY
+    let parsedDue = checkup;
+    if (dateRegex.test(checkup)) {
+      const [, day, month, year] = checkup.match(dateRegex);
+      parsedDue = `${year}-${month}-${day}`; // Convert to YYYY-MM-DD
+    }
+    const isValidDate = !isNaN(new Date(parsedDue).getTime());
+    if (!isValidDate) {
+      setError('Invalid due date format. Use YYYY-MM-DD or a valid date.');
+      return;
+    }
     try {
       await add_func(condition, checkup); // Assume add_func returns a promise
       setCondition('');
