@@ -71,6 +71,27 @@ const ConditionAdvice = () => {
 
     fetchConditions();
   }, [currentUser, aiResponses]); // Trigger effect whenever aiResponses changes
+  
+  const handleRead = (text) => {
+    if ('speechSynthesis' in window) {
+      speechSynthesis.cancel();
+
+      const utterance = new SpeechSynthesisUtterance(text);
+      speechSynthesis.speak(utterance);
+    } else {
+      alert('Your browser does not support text-to-speech.');
+    }
+  };
+
+  const handlePause = () => {
+    if ('speechSynthesis' in window) {
+      if (speechSynthesis.speaking && !speechSynthesis.paused) {
+        speechSynthesis.pause();
+      }
+    } else {
+      alert('Your browser does not support text-to-speech.');
+    }
+  };
 
   if (loading) return <p>Loading conditions for advice...</p>;
   if (error) return <p className="error">{error}</p>;
@@ -116,11 +137,25 @@ const ConditionAdvice = () => {
                           mergedAdvice.push(`${title} ${content}`);
                         }
                       }
-                      return mergedAdvice.map((item, index) => (
-                        <p key={index} style={{ margin: '10px 0' }}>
-                          {`${index + 1}. ${item}`}
-                        </p>
-                      ));
+                      return (
+                        <>
+                          {mergedAdvice.map((item, index) => (
+                            <p key={index} style={{ marginBottom: '10px' }}>
+                              {`${index + 1}. ${item}`}
+                            </p>
+                          ))}
+                          <button
+                            onClick={() => handleRead(mergedAdvice.join(' '))}
+                          >
+                            Read
+                          </button>
+                          <button
+                            onClick={handlePause}
+                          >
+                            Pause
+                          </button>
+                        </>
+                      );
                     })()
                   : 'Advice is being generated...'}
               </div>
