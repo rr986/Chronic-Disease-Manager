@@ -74,7 +74,7 @@ const ConditionAdvice = () => {
 
   if (loading) return <p>Loading conditions for advice...</p>;
   if (error) return <p className="error">{error}</p>;
-
+  /*
   return (
     <div>
       <h1>Condition Advice</h1>
@@ -84,6 +84,47 @@ const ConditionAdvice = () => {
             <h2>{condition.Condition}</h2>
             <p>Checkup Date: {condition.Checkup}</p>
             <p><strong>Advice:</strong> {aiResponses[condition.Condition] || 'Advice is being generated...'}</p>
+          </div>
+        ))
+      ) : (
+        <p>No chronic conditions found. Please add conditions to get advice.</p>
+      )}
+    </div>
+  );
+  */
+  return (
+    <div>
+      <h1>Condition Advice</h1>
+      {conditions.length > 0 ? (
+        conditions.map((condition) => (
+          <div key={condition.id} style={{ marginBottom: '20px', padding: '10px', border: '1px solid #ccc', borderRadius: '5px' }}>
+            <h2>{condition.Condition}</h2>
+            <p><strong>Checkup Date:</strong> {new Date(condition.Checkup).toLocaleDateString()}</p>
+            <div>
+              <strong>Advice:</strong>
+              <div style={{ marginLeft: '20px', lineHeight: '1.6' }}>
+                {aiResponses[condition.Condition]
+                  ? (() => {
+                      const adviceList = aiResponses[condition.Condition]
+                        .split('*')
+                        .filter(item => item.trim());
+                      const mergedAdvice = [];
+                      for (let i = 0; i < adviceList.length; i += 2) {
+                        const title = adviceList[i]?.trim().replace(/\s*:\s*$/, ':');
+                        const content = adviceList[i + 1]?.trim();
+                        if (title && content) {
+                          mergedAdvice.push(`${title} ${content}`);
+                        }
+                      }
+                      return mergedAdvice.map((item, index) => (
+                        <p key={index} style={{ margin: '10px 0' }}>
+                          {`${index + 1}. ${item}`}
+                        </p>
+                      ));
+                    })()
+                  : 'Advice is being generated...'}
+              </div>
+            </div>
           </div>
         ))
       ) : (
