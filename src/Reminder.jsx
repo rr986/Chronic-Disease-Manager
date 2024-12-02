@@ -70,13 +70,13 @@ function Reminder() {
         throw new Error('Time is not formatted properly');
       }
 
-   const dueDate = new Date(due);
-       const formattedDueDate = `${(dueDate.getMonth() + 1)
-         .toString()
-         .padStart(2, '0')}/${dueDate
-         .getDate()
-         .toString()
-         .padStart(2, '0')}/${dueDate.getFullYear()}`;
+      const dueDate = new Date(`${due}T${time}:00`); // Parse `due` with `time` as local time
+      const formattedDueDate = `${(dueDate.getMonth() + 1)
+        .toString()
+        .padStart(2, '0')}/${dueDate
+        .getDate()
+        .toString()
+        .padStart(2, '0')}/${dueDate.getFullYear()}`;
 
        const newReminder = {
          title: title.trim(),

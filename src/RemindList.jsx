@@ -26,7 +26,7 @@ const RemindList = ({
   }
 
   const today = new Date();
-  const dueDateObj = new Date(formattedDueDate);
+  const dueDateObj = new Date(`${due}T${time}:00`); // Combine `due` and `time` from Firestore into a complete Date object
   const isExpired = dueDateObj < today;
   const speechText = `This reminder is titled ${title}. ${description}. It is due on ${
     formattedDueDate !== 'Invalid date' ? formattedDueDate : 'an unspecified date'
