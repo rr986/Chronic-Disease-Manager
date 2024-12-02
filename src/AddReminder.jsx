@@ -26,10 +26,20 @@ const AddReminder = ({ add_func }) => {
       setError('Due date is required.');
       return;
     }
-    // if(!time.trim() || time.trim().length !== 5){
-    //   setError(`Time is required.`);
-    //   return;
-    // }
+    // Parse the due date (if manually entered in a non-standard format like DD-MM-YYYY)
+    const dateRegex = /^(\d{2})-(\d{2})-(\d{4})$/; // Matches DD-MM-YYYY
+    let parsedDue = due;
+    if (dateRegex.test(due)) {
+      const [, day, month, year] = due.match(dateRegex);
+      parsedDue = `${year}-${month}-${day}`; // Convert to YYYY-MM-DD
+    }
+
+    // Validate the parsed date
+    const isValidDate = !isNaN(new Date(parsedDue).getTime());
+    if (!isValidDate) {
+      setError('Invalid due date format. Use YYYY-MM-DD or a valid date.');
+      return;
+    }
     const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/; // Matches HH:MM in 24-hour format
     if (!time.trim() || !timeRegex.test(time.trim())) {
       setError('Invalid time format. Time must be in HH:MM format (24-hour clock).');
