@@ -24,10 +24,18 @@ const RemindList = ({
       formattedDueDate = 'Invalid date';
     }
   }
+  
+  // Parse MM/DD/YYYY to Date object
+  const parseFormattedDueDate = (formattedDueDate) => {
+    const [month, day, year] = formattedDueDate.split('/');
+    return new Date(`${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`);
+  };
 
-  const today = new Date();
-  const dueDateObj = new Date(`${due}T${time}:00`); // Combine `due` and `time` from Firestore into a complete Date object
-  const isExpired = dueDateObj < today;
+  const dueDateObj = parseFormattedDueDate(due);
+  const fullDueDateObj = new Date(`${dueDateObj.toISOString().split('T')[0]}T${time}:00`); // Combine due date and time for comparison
+  const today = new Date(); 
+  const isExpired = fullDueDateObj < today;
+  
   const speechText = `This reminder is titled ${title}. ${description}. It is due on ${
     formattedDueDate !== 'Invalid date' ? formattedDueDate : 'an unspecified date'
   }.`;
