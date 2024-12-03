@@ -24,6 +24,32 @@ function Reminder() {
     return <p>Please log in to view and add reminders.</p>;
   }
 
+  // Request notification permissions
+  useEffect(() => {
+    switch (Notification.permission) {
+      case 'granted':
+        console.log('Notifications are already enabled.');
+        break;
+  
+      case 'denied':
+        alert('Notification permissions are blocked. Enable them in your browser settings.');
+        break;
+  
+      case 'default':
+        Notification.requestPermission().then((permission) => {
+          if (permission === 'granted') {
+            console.log('Notification permission granted.');
+          } else if (permission === 'denied') {
+            alert('You have blocked notifications. Enable them in your browser settings.');
+          }
+        });
+        break;
+  
+      default:
+        console.error('Unknown notification permission state.');
+    }
+  }, []);
+
   const remindersCollectionRef = collection(
     db,
     'users',
@@ -53,6 +79,15 @@ function Reminder() {
     return () => unsubscribe();
   }, [remindersCollectionRef]);
 
+  // Function to show notifications
+  const showNotification = (title, options) => {
+    if (Notification.permission === 'granted') {
+      new Notification(title, options);
+    } else {
+      console.error('Notification permission not granted.');
+    }
+  };
+
   // Function to add a reminder to Firestore
   const addReminder = async (title, description, due, time) => {
     try {
@@ -71,6 +106,19 @@ function Reminder() {
       }
 
       const dueDate = new Date(`${due}T${time}:00`); // Parse `due` with `time` as local time
+      
+      const timeDifference = dueDate.getTime() - Date.now();
+      if (timeDifference > 0) {
+        console.log(`Notification will be triggered in ${timeDifference} ms.`);
+        setTimeout(() => {
+          showNotification(`Reminder: ${title}`, {
+            body: description,
+          });
+        }, timeDifference);
+      } else {
+        console.warn('Due time has already passed. No notification scheduled.');
+      }
+
       const formattedDueDate = `${(dueDate.getMonth() + 1)
         .toString()
         .padStart(2, '0')}/${dueDate
@@ -134,6 +182,25 @@ function Reminder() {
       setError('Failed to delete reminder.');
     }
   };
+
+  // Check and set notifications for pending reminders
+  useEffect(() => {
+    reminders.forEach((reminder) => {
+      if (!reminder.completed) {
+        const dueDate = new Date(`${reminder.due}T${reminder.time}:00`);
+        const timeDifference = dueDate.getTime() - Date.now();
+
+        if (timeDifference > 0) {
+          console.log(`Scheduling notification for reminder "${reminder.title}" in ${timeDifference} ms.`);
+          setTimeout(() => {
+            showNotification(`Reminder: ${reminder.title}`, {
+              body: reminder.description,
+            });
+          }, timeDifference);
+        }
+      }
+    });
+  }, [reminders]);
 
   return (
     <div className="reminder-container">
