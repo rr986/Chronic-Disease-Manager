@@ -11,8 +11,19 @@ const RemindList = ({
   handleClick,
   deleteReminder,
 }) => {
+  const parseFormattedDueDate = (formattedDueDate) => {
+    if (formattedDueDate.includes('/')) {
+      // Assume MM/DD/YYYY
+      const [month, day, year] = formattedDueDate.split('/');
+      return new Date(`${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`);
+    }
+    if (formattedDueDate.includes('-')) {
+      // Assume YYYY-MM-DD
+      return new Date(formattedDueDate);
+    }
+    return null; // Invalid format
+  };
   let formattedDueDate = 'No due date';
-
   if (due) {
     if (typeof due === 'string') {
       formattedDueDate = due;
@@ -24,18 +35,11 @@ const RemindList = ({
       formattedDueDate = 'Invalid date';
     }
   }
-  
-  // Parse MM/DD/YYYY to Date object
-  const parseFormattedDueDate = (formattedDueDate) => {
-    const [month, day, year] = formattedDueDate.split('/');
-    return new Date(`${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`);
-  };
-
-  const dueDateObj = parseFormattedDueDate(due);
-  const fullDueDateObj = new Date(`${dueDateObj.toISOString().split('T')[0]}T${time}:00`); // Combine due date and time for comparison
-  const today = new Date(); 
-  const isExpired = fullDueDateObj < today;
-  
+  const dueDateObj = parseFormattedDueDate(formattedDueDate);
+  const fullDueDateObj =
+    dueDateObj && time  ? new Date(`${dueDateObj.toISOString().split('T')[0]}T${time}:00`): null;
+  const today = new Date();
+  const isExpired = fullDueDateObj ? fullDueDateObj < today : false;
   const speechText = `This reminder is titled ${title}. ${description}. It is due on ${
     formattedDueDate !== 'Invalid date' ? formattedDueDate : 'an unspecified date'
   }.`;
