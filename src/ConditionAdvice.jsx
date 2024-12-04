@@ -76,8 +76,13 @@ const ConditionAdvice = () => {
     if ('speechSynthesis' in window) {
       speechSynthesis.cancel();
 
-      const utterance = new SpeechSynthesisUtterance(text);
-      speechSynthesis.speak(utterance);
+      // const utterance = new SpeechSynthesisUtterance(text);
+      // speechSynthesis.speak(utterance);
+      const sentences = text.split('. ').filter((sentence) => sentence.trim());
+      sentences.forEach((sentence) => {
+        const utterance = new SpeechSynthesisUtterance(sentence + '.');
+        speechSynthesis.speak(utterance);
+    });
     } else {
       alert('Your browser does not support text-to-speech.');
     }
