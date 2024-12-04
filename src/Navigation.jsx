@@ -42,7 +42,7 @@ const NavigationAuth = () => {
             to='/voiceinput'
             className={(navData) => (navData.isActive ? 'active' : 'none')}
           >
-            VoiceInput
+            Voice Assistant
           </NavLink>
         </li>
         <li>
