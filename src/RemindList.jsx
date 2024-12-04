@@ -40,23 +40,53 @@ const RemindList = ({
     dueDateObj && time  ? new Date(`${dueDateObj.toISOString().split('T')[0]}T${time}:00`): null;
   const today = new Date();
   const isExpired = fullDueDateObj ? fullDueDateObj < today : false;
+  let timeAm = (ti) => {
+    let [hours, minutes] = ti.split(":").map(str => parseInt(str, 10));
+    if(hours > 12){
+      hours = hours-12;
+      let newTime = `${hours}:${minutes.toString().padStart(2, '0')} PM`;
+      return newTime
+    }
+    else if(hours === 12){
+      let newTime = `${hours}:${minutes.toString().padStart(2, '0')} PM`;
+      return newTime
+    }
+    else if(hours === 0){
+      let newTime = `12:${minutes.toString().padStart(2, '0')} AM`;
+      return newTime
+    }
+    else{
+      return `${ti} AM`;
+    }
+  }
   const speechText = `This reminder is titled ${title}. ${description}. It is due on ${
     formattedDueDate !== 'Invalid date' ? formattedDueDate : 'an unspecified date'
-  }.`;
+  } at ${timeAm(time)}`;
+  const handleRead = (text) => {
+    if ('speechSynthesis' in window) {
+      speechSynthesis.cancel();
+
+      const utterance = new SpeechSynthesisUtterance(text);
+      speechSynthesis.speak(utterance);
+      
+    } else {
+      alert('Your browser does not support text-to-speech.');
+    }
+  };
 
   return (
     <div className={`reminder-item ${isExpired ? 'expired' : ''}`}>
       <h3>{title}</h3>
       <p>{description}</p>
       <p>Due Date: {formattedDueDate}</p>
-      <p>Time: {time}</p>
+      <p>Time: {timeAm(time)}</p>
       {isExpired && <p className="expired-message">This reminder is past due!</p>}
       <p>Completed: {completed ? 'Yes' : 'No'}</p>
       <button onClick={() => deleteReminder(id)}>Delete</button>
       <button onClick={() => handleClick({ id, title, description, due, completed })}>
         {completed ? 'Undo' : 'Complete'}
       </button>
-      <Speech text={speechText} textAsButton={true} displayText="Read" />
+      <button onClick={() => handleRead(speechText)}> Read </button>
     </div>
   );
 };
