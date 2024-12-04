@@ -97,7 +97,15 @@ const ConditionAdvice = () => {
       alert('Your browser does not support text-to-speech.');
     }
   };
-
+  const handleResume = () => {
+    if ('speechSynthesis' in window) {
+      if (speechSynthesis.paused) {
+        speechSynthesis.resume();
+      }
+    } else {
+      alert('Your browser does not support text-to-speech.');
+    }
+  };
   if (loading) return <p>Loading conditions for advice...</p>;
   if (error) return <p className="error">{error}</p>;
   /*
@@ -158,6 +166,11 @@ const ConditionAdvice = () => {
                             onClick={handlePause}
                           >
                             Pause
+                          </button>
+                            <button
+                            onClick={handleResume}
+                          >
+                            Resume
                           </button>
                         </>
                       );
