@@ -24,7 +24,10 @@ describe('AddReminder Component', () => {
       screen.getByPlaceholderText(/due date/i),
       '2024-12-10'
     );
-
+    await userEvent.type(
+      screen.getByPlaceholderText(/time/i),
+      '2024-12-10'
+    );
     await userEvent.click(
       screen.getByRole('button', { name: /submit/i })
     );
@@ -58,6 +61,10 @@ describe('AddReminder Component', () => {
     await userEvent.type(
       screen.getByPlaceholderText(/due date/i),
       '2024-12-10'
+    );
+    await userEvent.type(
+      screen.getByPlaceholderText(/time/i),
+      '12:01'
     );
 
     await userEvent.click(
