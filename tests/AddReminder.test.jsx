@@ -26,7 +26,7 @@ describe('AddReminder Component', () => {
     );
     await userEvent.type(
       screen.getByPlaceholderText(/time/i),
-      '2024-12-10'
+      '12:01'
     );
     await userEvent.click(
       screen.getByRole('button', { name: /submit/i })
@@ -36,7 +36,8 @@ describe('AddReminder Component', () => {
       expect(mockAddFunc).toHaveBeenCalledWith(
         'Buy Groceries',
         'Buy milk, eggs, and bread.',
-        '2024-12-10'
+        '2024-12-10',
+        '12:01'
       );
     });
     expect(
