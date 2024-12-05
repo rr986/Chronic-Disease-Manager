@@ -4,6 +4,7 @@ import { collection, getDocs } from 'firebase/firestore';
 import db from './firebase/reminderModel';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 let index = 0;
+//let isPaused = false;
 let sentences = [];
 const ConditionAdvice = () => {
   const { currentUser } = useContext(AuthContext);
@@ -12,6 +13,7 @@ const ConditionAdvice = () => {
   const [error, setError] = useState(null);
   const [loadingAI, setLoadingAI] = useState(false);
   const [aiResponses, setAIResponses] = useState({}); // Track AI responses
+  const [isPaused, setIsPaused] = useState(false);
 
   const fetchConditionAdvice = async (condition) => {
     try {
@@ -76,24 +78,22 @@ const ConditionAdvice = () => {
   const handleRead = (text) => {
     if ('speechSynthesis' in window) {
       speechSynthesis.cancel();
+      setIsPaused(false);
       sentences = text.split('. ').filter((sentence) => sentence.trim());
       index = 0;
 
-    if (!sentences) return;
-
-    function speakNext() {
-        if (index < sentences.length) {
-            const sentance = sentences[index];
-            const utterance = new SpeechSynthesisUtterance(sentance);
+    const speakNext = () => {
+        if (index < sentences.length && !isPaused) {
+            const utterance = new SpeechSynthesisUtterance(sentences[index]);
             utterance.onend = () => {
-                if (!speechSynthesis.paused) {
+                if (!isPaused) {
                     index++;
                     speakNext();
                 }
             };
             speechSynthesis.speak(utterance);
         }
-    }
+    };
 
     speakNext(); 
     } else {
@@ -101,23 +101,22 @@ const ConditionAdvice = () => {
     }
   };
 
-  const handlePause = (x) => {
-    let pauseButton = document.getElementById('pause_resume');
+  const handlePause = () => {
+    const pauseButton = document.getElementById('pause_resume');
     if ('speechSynthesis' in window) {
-      if (speechSynthesis.speaking && !speechSynthesis.paused) {
-        speechSynthesis.pause();
-        pauseButton.textContent = 'Resume';
-      }
-      else if(speechSynthesis.paused){
-        if(!speechSynthesis.speaking){
-          handleRead(x);
+      if (speechSynthesis.speaking) {
+        if (!isPaused) {
+          // Pause the speech
+          speechSynthesis.pause();
+          setIsPaused(true);
+          pauseButton.textContent = 'Resume';
+        } else {
+          // Resume the speech
+          speechSynthesis.resume();
+          setIsPaused(false);
           pauseButton.textContent = 'Pause';
         }
-        else{
-        speechSynthesis.resume();
       }
-      pauseButton.textContent = 'Pause';
-    }
     } else {
       alert('Your browser does not support text-to-speech.');
     }
