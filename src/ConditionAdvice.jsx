@@ -77,44 +77,45 @@ const ConditionAdvice = () => {
   
   const handleRead = (text) => {
     if ('speechSynthesis' in window) {
-      speechSynthesis.cancel();
-      setIsPaused(false);
-      sentences = text.split('. ').filter((sentence) => sentence.trim());
-      index = 0;
-
-    const speakNext = () => {
+      if (!isPaused) {
+        speechSynthesis.cancel(); // Cancel any ongoing speech
+        sentences = text.split('. ').filter((sentence) => sentence.trim()); // Split sentences for reading
+        index = 0; // Reset index only when starting a new read session
+      }
+  
+      const speakNext = () => {
         if (index < sentences.length && !isPaused) {
-            const utterance = new SpeechSynthesisUtterance(sentences[index]);
-            utterance.onend = () => {
-                if (!isPaused) {
-                    index++;
-                    speakNext();
-                }
-            };
-            speechSynthesis.speak(utterance);
+          const utterance = new SpeechSynthesisUtterance(sentences[index]);
+          utterance.onend = () => {
+            if (!isPaused) {
+              index++;
+              speakNext(); // Continue reading the next sentence
+            }
+          };
+          speechSynthesis.speak(utterance);
         }
-    };
-
-    speakNext(); 
+      };
+  
+      speakNext(); // Start the speech synthesis
     } else {
       alert('Your browser does not support text-to-speech.');
     }
   };
-
+  
   const handlePause = () => {
     const pauseButton = document.getElementById('pause_resume');
     if ('speechSynthesis' in window) {
-      if (speechSynthesis.speaking) {
+      if (speechSynthesis.speaking || speechSynthesis.paused) {
         if (!isPaused) {
           // Pause the speech
           speechSynthesis.pause();
           setIsPaused(true);
-          pauseButton.textContent = 'Resume';
+          pauseButton.textContent = 'Resume'; // Change button text to 'Resume'
         } else {
           // Resume the speech
           speechSynthesis.resume();
           setIsPaused(false);
-          pauseButton.textContent = 'Pause';
+          pauseButton.textContent = 'Pause'; // Change button text to 'Pause'
         }
       }
     } else {
