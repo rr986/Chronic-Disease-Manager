@@ -3,7 +3,8 @@ import { AuthContext } from './context/AuthContext';
 import { collection, getDocs } from 'firebase/firestore';
 import db from './firebase/reminderModel';
 import { GoogleGenerativeAI } from '@google/generative-ai';
-
+let index = 0;
+let sentences = [];
 const ConditionAdvice = () => {
   const { currentUser } = useContext(AuthContext);
   const [conditions, setConditions] = useState([]);
@@ -75,37 +76,53 @@ const ConditionAdvice = () => {
   const handleRead = (text) => {
     if ('speechSynthesis' in window) {
       speechSynthesis.cancel();
+      sentences = text.split('. ').filter((sentence) => sentence.trim());
+      index = 0;
 
-      // const utterance = new SpeechSynthesisUtterance(text);
-      // speechSynthesis.speak(utterance);
-      const sentences = text.split('. ').filter((sentence) => sentence.trim());
-      sentences.forEach((sentence) => {
-        const utterance = new SpeechSynthesisUtterance(sentence + '.');
-        speechSynthesis.speak(utterance);
-    });
+    if (!sentences) return;
+
+    function speakNext() {
+        if (index < sentences.length) {
+            const sentance = sentences[index];
+            const utterance = new SpeechSynthesisUtterance(sentance);
+            utterance.onend = () => {
+                if (!speechSynthesis.paused) {
+                    index++;
+                    speakNext();
+                }
+            };
+            speechSynthesis.speak(utterance);
+        }
+    }
+
+    speakNext(); 
     } else {
       alert('Your browser does not support text-to-speech.');
     }
   };
 
-  const handlePause = () => {
+  const handlePause = (x) => {
+    let pauseButton = document.getElementById('pause_resume');
     if ('speechSynthesis' in window) {
       if (speechSynthesis.speaking && !speechSynthesis.paused) {
         speechSynthesis.pause();
+        pauseButton.textContent = 'Resume';
       }
-    } else {
-      alert('Your browser does not support text-to-speech.');
-    }
-  };
-  const handleResume = () => {
-    if ('speechSynthesis' in window) {
-      if (speechSynthesis.paused) {
+      else if(speechSynthesis.paused){
+        if(!speechSynthesis.speaking){
+          handleRead(x);
+          pauseButton.textContent = 'Pause';
+        }
+        else{
         speechSynthesis.resume();
       }
+      pauseButton.textContent = 'Pause';
+    }
     } else {
       alert('Your browser does not support text-to-speech.');
     }
   };
+  
   if (loading) return <p>Loading conditions for advice...</p>;
   if (error) return <p className="error">{error}</p>;
   /*
@@ -163,14 +180,9 @@ const ConditionAdvice = () => {
                             Read
                           </button>
                           <button
-                            onClick={handlePause}
-                          >
+                            onClick={() => handlePause(mergedAdvice[1])}
+                            id='pause_resume'>
                             Pause
-                          </button>
-                            <button
-                            onClick={handleResume}
-                          >
-                            Resume
                           </button>
                         </>
                       );
