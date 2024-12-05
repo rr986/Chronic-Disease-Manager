@@ -14,7 +14,7 @@ const ConditionAdvice = () => {
   const [loadingAI, setLoadingAI] = useState(false);
   const [aiResponses, setAIResponses] = useState({}); // Track AI responses
   const [isPaused, setIsPaused] = useState(false);
-
+  const [pauseStates, setPauseStates] = useState({});
   const fetchConditionAdvice = async (condition) => {
     try {
       setLoadingAI(true);
@@ -75,13 +75,17 @@ const ConditionAdvice = () => {
     fetchConditions();
   }, [currentUser, aiResponses]); // Trigger effect whenever aiResponses changes
   
-  const handleRead = (text) => {
+  const handleRead = (text,conditionId) => {
     if ('speechSynthesis' in window) {
-      if (!isPaused) {
+      if (pauseStates[conditionId]) {
+        speechSynthesis.resume();
+        setPauseStates((prev) => ({ ...prev, [conditionId]: false }));
+        return;
+      }
         speechSynthesis.cancel(); // Cancel any ongoing speech
         sentences = text.split('. ').filter((sentence) => sentence.trim()); // Split sentences for reading
         index = 0; // Reset index only when starting a new read session
-      }
+      
   
       const speakNext = () => {
         if (index < sentences.length && !isPaused) {
@@ -102,22 +106,17 @@ const ConditionAdvice = () => {
     }
   };
   
-  const handlePause = () => {
-    const pauseButton = document.getElementById('pause_resume');
+  const handlePause = (conditionId) => {
+    const pauseButton = document.getElementById(`pause_resume_${conditionId}`);
     if ('speechSynthesis' in window) {
-      if (speechSynthesis.speaking || speechSynthesis.paused) {
-        if (!isPaused) {
-          // Pause the speech
-          speechSynthesis.pause();
-          setIsPaused(true);
-          pauseButton.textContent = 'Resume'; // Change button text to 'Resume'
-        } else {
-          // Resume the speech
-          speechSynthesis.resume();
-          setIsPaused(false);
-          pauseButton.textContent = 'Pause'; // Change button text to 'Pause'
-        }
-      }
+    const isCurrentlyPaused = pauseStates[conditionId] || false;
+    setPauseStates((prev) => ({ ...prev, [conditionId]: !isCurrentlyPaused }));
+
+    if (!isCurrentlyPaused) {
+      speechSynthesis.pause();
+    } else {
+      speechSynthesis.resume();
+    }
     } else {
       alert('Your browser does not support text-to-speech.');
     }
@@ -175,14 +174,14 @@ const ConditionAdvice = () => {
                             </p>
                           ))}
                           <button
-                            onClick={() => handleRead(mergedAdvice.join(' '))}
+                            onClick={() => handleRead(mergedAdvice.join(' '),condition.id)}
                           >
                             Read
                           </button>
                           <button
-                            onClick={() => handlePause(mergedAdvice[1])}
-                            id='pause_resume'>
-                            Pause
+                            onClick={() => handlePause(condition.id)}
+                            id={`pause_resume_${condition.id}`}>
+                            {pauseStates[condition.id] ? 'Resume' : 'Pause'}
                           </button>
                         </>
                       );
