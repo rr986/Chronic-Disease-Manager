@@ -77,6 +77,10 @@ const ConditionAdvice = () => {
   
   const handleRead = (text,conditionId) => {
     if ('speechSynthesis' in window) {
+      let keys = Object.keys(pauseStates);
+      for(let x = 0; x < keys.length; x++){
+        pauseStates[keys[x]] = false;
+      }
       if (pauseStates[conditionId]) {
         speechSynthesis.resume();
         setPauseStates((prev) => ({ ...prev, [conditionId]: false }));
