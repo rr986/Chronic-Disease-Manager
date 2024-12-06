@@ -25,6 +25,19 @@ const VoiceInput = () => {
     return <span>Your browser doesn't support speech recognition.</span>;
   }
 
+const getCurrentTimeAndAddOneHour = () => { const now = new Date();
+const hours = now.getHours();
+const minutes = now.getMinutes();
+// Format the current time in 'hh:mm'
+const currentTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+// Add 1 hour
+now.setHours(now.getHours() + 1);
+// Get the updated hours and minutes
+const updatedHours = now.getHours(); const updatedMinutes = now.getMinutes();
+// Format the updated time in 'hh:mm'
+const updatedTime = `${String(updatedHours).padStart(2, '0')}:${String(updatedMinutes).padStart(2, '0')}`;
+return { currentTime, updatedTime };
+};
   // Function to add the voice input as a reminder in Firestore
   const addVoiceReminder = async (transcriptText) => {
     if (!currentUser) {
@@ -50,15 +63,17 @@ const VoiceInput = () => {
 
       setLoadingReminder(true);
 
+      const { currentTime, updatedTime } = getCurrentTimeAndAddOneHour();
+
       // Prepare the new reminder object
       const newReminder = {
         title: 'Voice Reminder',
         description: trimmedTranscript,
         due: new Date().toISOString().split('T')[0], // Set today's date as due date
+        time:updatedTime,
         createdAt: Timestamp.now(),
         completed: false,
       };
-
       // Reference to the user's reminders subcollection
       const userRemindersRef = collection(db, 'users', currentUser.uid, 'reminders');
 
@@ -96,11 +111,12 @@ const VoiceInput = () => {
       setLoadingAI(true);
 
       // Initialize Google Generative AI (Replace with your actual API integration)
-      const genAI = new GoogleGenerativeAI(process.env.REACT_APP_GOOGLE_GENAI_API_KEY); // ⚠️ Use environment variables
+      const genAI = new GoogleGenerativeAI('AIzaSyB2k5WLsyyVAiHgTMNV2l6gGnImTwFTskI');
+
       const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
       const data = await model.generateContent(trimmedQuery);
-      setAIResponse(`🤖 AI Response: ${data.response.text}`);
+      setAIResponse(`🤖 AI Response: ${data.response.candidates[0].content.parts[0].text}`);
       resetTranscript(); // Clear the transcript after receiving the response
     } catch (err) {
       console.error('Error fetching AI response:', err);
